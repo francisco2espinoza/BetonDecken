@@ -3,23 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_tracking">
 
     <fragment
-        android:id="@+id/nav_home"
+        android:id="@+id/nav_tracking"
         android:name="com.example.betondecken.ui.home.HomeFragment"
-        android:label="@string/menu_home"
+        android:label="@string/menu_tracking"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
+        android:id="@+id/nav_analytic"
         android:name="com.example.betondecken.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
+        android:label="@string/menu_analytic"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
+        android:id="@+id/nav_account"
         android:name="com.example.betondecken.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
+        android:label="@string/menu_account"
+        tools:layout="@layout/fragment_slideshow" />
+    <fragment
+        android:id="@+id/nav_support"
+        android:name="com.example.betondecken.ui.slideshow.SlideshowFragment"
+        android:label="@string/menu_support"
         tools:layout="@layout/fragment_slideshow" />
 </navigation>
