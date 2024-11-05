@@ -1,4 +1,4 @@
-package com.example.betondecken.ui.gallery
+package com.example.betondecken.ui.tracking
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.betondecken.databinding.FragmentAnalyticBinding
+import com.example.betondecken.databinding.FragmentTrackingBinding
 
-class GalleryFragment : Fragment() {
+class TrackingFragment : Fragment() {
 
-    private var _binding: FragmentAnalyticBinding? = null
+    private var _binding: FragmentTrackingBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class GalleryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val galleryViewModel =
-            ViewModelProvider(this).get(GalleryViewModel::class.java)
+        val homeViewModel =
+            ViewModelProvider(this).get(TrackingViewModel::class.java)
 
-        _binding = FragmentAnalyticBinding.inflate(inflater, container, false)
+        _binding = FragmentTrackingBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textGallery
-        galleryViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.textTracking
+        homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root

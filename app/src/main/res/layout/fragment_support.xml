@@ -1,22 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    tools:context=".ui.support.SupportFragment">-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/text_support"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="8dp"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:layout_marginEnd="8dp"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textSize="20sp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!-- res/layout/fragment_support.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.slideshow.SlideshowFragment">
+    android:orientation="vertical"
+    android:background="#0A174E"
+    android:padding="16dp">
 
-    <TextView
-        android:id="@+id/text_slideshow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Título -->
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Contacta Soporte"
+android:textColor="@android:color/white"
+android:textSize="20sp"
+android:textStyle="bold"
+android:layout_gravity="center_horizontal"
+android:layout_marginBottom="16dp" />
+
+    <!-- Botones de Acción -->
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+android:gravity="center"
+android:layout_marginBottom="16dp">
+
+<!-- Botón Chatea con un Técnico -->
+<Button
+    android:id="@+id/btn_chat"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:backgroundTint="#4A90E2"
+    android:text="Chatea con un Técnico"
+    android:textColor="@android:color/white"
+    android:drawableLeft="@drawable/ic_menu_gallery"
+    android:drawablePadding="8dp"
+    android:padding="12dp" />
+
+<!-- Espacio entre los botones -->
+<Space
+    android:layout_width="16dp"
+    android:layout_height="wrap_content" />
+
+<!-- Botón Llámanos -->
+<Button
+    android:id="@+id/btn_call"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:backgroundTint="#4A90E2"
+    android:text="Llámanos"
+    android:textColor="@android:color/white"
+    android:drawableLeft="@drawable/ic_menu_camera"
+    android:drawablePadding="8dp"
+    android:padding="12dp" />
+</LinearLayout>
+
+    <!-- Campo de texto para ingresar consulta -->
+<EditText
+android:id="@+id/et_consulta"
+android:layout_width="match_parent"
+android:layout_height="150dp"
+android:hint="Ingresa tus consulta"
+android:backgroundTint="@android:color/white"
+android:padding="12dp"
+android:textColor="@android:color/white"
+android:textColorHint="#A9A9A9"
+android:gravity="top"
+android:inputType="textMultiLine"
+android:layout_marginBottom="16dp"
+android:background="@drawable/rounded_edittext" />
+
+    <!-- Botón Enviar Consulta -->
+<Button
+android:id="@+id/btn_send"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="Enviar Consulta"
+android:backgroundTint="#4A90E2"
+android:textColor="@android:color/white"
+android:padding="12dp"
+android:layout_marginTop="8dp"
+android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
