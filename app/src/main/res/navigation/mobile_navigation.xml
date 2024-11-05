@@ -9,22 +9,22 @@
         android:id="@+id/nav_tracking"
         android:name="com.example.betondecken.ui.home.HomeFragment"
         android:label="@string/menu_tracking"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_tracking" />
 
     <fragment
         android:id="@+id/nav_analytic"
         android:name="com.example.betondecken.ui.gallery.GalleryFragment"
         android:label="@string/menu_analytic"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_analytic" />
 
     <fragment
         android:id="@+id/nav_account"
         android:name="com.example.betondecken.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_account"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_account" />
     <fragment
         android:id="@+id/nav_support"
         android:name="com.example.betondecken.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_support"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_support" />
 </navigation>
