@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 class TrackingViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "Este es el fragmento para el Tracking"
+        value = ""
     }
     val text: LiveData<String> = _text
 }
