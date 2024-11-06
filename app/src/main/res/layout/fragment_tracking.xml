@@ -53,6 +53,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
             android:background="@color/white"
+            android:inputType="textNoSuggestions"
             android:hint="Ingrese su número de traking"
             android:paddingLeft="4dp" />
 
