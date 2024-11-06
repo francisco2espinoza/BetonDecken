@@ -34,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
         val login = binding.login
         val loading = binding.loading
 
-        username.setText("adfasdf@gmail.com")
+        username.setText("grupo3@gmail.com")
         password.setText("123456")
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
