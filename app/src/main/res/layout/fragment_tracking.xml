@@ -111,7 +111,6 @@
         <ImageView
             android:layout_width="104dp"
             android:layout_height="143dp"
-            android:layout_gravity="right"
             android:src="@drawable/ic_track_client_service"
             />
     </LinearLayout>
