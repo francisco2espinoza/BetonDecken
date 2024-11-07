@@ -5,14 +5,14 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TrackingActivity"
-    android:background="#071333">
+    android:background="#071333"
+    tools:context=".TrackingActivity">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="100dp"
         android:text="EN PROCESO"
         android:textAlignment="center"
         android:textColor="@color/white"
@@ -25,12 +25,12 @@
         android:layout_width="match_parent"
         android:layout_height="152dp"
         android:layout_margin="10dp"
+        android:background="@drawable/ic_background_traking"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        android:background="@drawable/ic_background_traking"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
     </LinearLayout>
 
     <TextView
