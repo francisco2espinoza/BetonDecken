@@ -44,6 +44,7 @@
 // src/main/java/com/example/betondecken/ui/support/SupportFragment.kt
 package com.example.betondecken.ui.support
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -52,7 +53,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.betondecken.MainActivity
 import com.example.betondecken.R
+import com.example.betondecken.TrackingActivity
 
 class SupportFragment : Fragment() {
 
@@ -92,4 +95,6 @@ class SupportFragment : Fragment() {
 
         return root
     }
+
+
 }
