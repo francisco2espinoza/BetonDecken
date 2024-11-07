@@ -1,38 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="120dp"
     android:orientation="horizontal"
     android:weightSum="6"
-    android:layout_margin="4dp">
+    android:layout_margin="4dp"
+    android:background="#071333"
+    >
 
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="5">
-
-        <TextView
-            android:id="@+id/titulo"
-            android:layout_width="match_parent"
+        android:orientation="horizontal"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/purple_700"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="46dp"
+                android:layout_height="40dp"
 
-        <TextView
-            android:id="@+id/genero"
+                android:src="@drawable/ic_state_preparing"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="8dp">
+
+            <TextView
+                android:id="@+id/txtEstadoPedido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Preparando despacho"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtEstadoDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Jicamarca, Perú"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="8dp">
 
+            <TextView
+                android:id="@+id/txtEstadoFechaHora"
+                android:text="11:15AM"
+                android:gravity="right"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                />
+        </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/anio"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:layout_weight="1"/>
+
 
 </LinearLayout>
