@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BetonDecken</string>
+    <string name="app_name">Concreta</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -11,14 +11,15 @@
     <string name="menu_analytic">Analítica</string>
     <string name="menu_account">Cuenta</string>
     <string name="menu_support">Soporte</string>
+    <string name="menu_logout">Salir</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Contraseña</string>
     <string name="action_sign_in">Ingresar</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
+    <string name="welcome">"Bienvenidos !"</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
+    <string name="login_failed">"Ingreso fallido"</string>
     <string name="profile_picture">Foto de perfil</string>
 </resources>

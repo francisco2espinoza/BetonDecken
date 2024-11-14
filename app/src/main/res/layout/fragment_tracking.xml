@@ -68,7 +68,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="331dp"
             android:orientation="vertical">
 
             <ImageView
@@ -77,7 +77,7 @@
                 android:layout_height="212dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="24dp"
-                android:src="@drawable/betondecken"
+                android:src="@drawable/logoconcreta1"
 
                 />
         </LinearLayout>

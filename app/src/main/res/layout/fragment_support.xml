@@ -29,17 +29,17 @@ android:gravity="center"
 android:layout_marginBottom="16dp">
 
 <!-- Botón Chatea con un Técnico -->
-<Button
-    android:id="@+id/btn_chat"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:backgroundTint="#4A90E2"
-    android:text="Chatea con un Técnico"
-    android:textColor="@android:color/white"
-    android:drawableLeft="@drawable/ic_menu_gallery"
-    android:drawablePadding="8dp"
-    android:padding="12dp" />
+    <Button
+        android:id="@+id/btn_chat"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:backgroundTint="#4A90E2"
+        android:drawableLeft="@drawable/support_icon"
+        android:drawablePadding="8dp"
+        android:padding="12dp"
+        android:text="Chatea con un Técnico"
+        android:textColor="@android:color/white" />
 
 <!-- Espacio entre los botones -->
 <Space
@@ -47,17 +47,17 @@ android:layout_marginBottom="16dp">
     android:layout_height="wrap_content" />
 
 <!-- Botón Llámanos -->
-<Button
-    android:id="@+id/btn_call"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:backgroundTint="#4A90E2"
-    android:text="Llámanos"
-    android:textColor="@android:color/white"
-    android:drawableLeft="@drawable/ic_menu_camera"
-    android:drawablePadding="8dp"
-    android:padding="12dp" />
+    <Button
+        android:id="@+id/btn_call"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:backgroundTint="#4A90E2"
+        android:drawableLeft="@drawable/phone"
+        android:drawablePadding="8dp"
+        android:padding="12dp"
+        android:text="Llámanos"
+        android:textColor="@android:color/white" />
 </LinearLayout>
 
     <!-- Campo de texto para ingresar consulta -->
