@@ -9,8 +9,22 @@
         android:id="@+id/nav_tracking"
         android:name="com.example.betondecken.ui.tracking.TrackingFragment"
         android:label="@string/menu_tracking"
-        tools:layout="@layout/fragment_tracking" />
+        tools:layout="@layout/fragment_tracking" >
+    <!-- Acción hacia Pedidos -->
+    <action
+        android:id="@+id/action_nav_tracking_to_nav_pedidos"
+        app:destination="@id/nav_pedidos" />
 
+    <!-- Acción hacia Soporte -->
+    <action
+        android:id="@+id/action_nav_tracking_to_nav_support"
+        app:destination="@id/nav_support" />
+
+    <!-- Acción hacia Servicio al Cliente -->
+    <action
+        android:id="@+id/action_nav_tracking_to_nav_servicio"
+        app:destination="@id/nav_servicio" />
+    </fragment>
     <fragment
         android:id="@+id/nav_analytic"
         android:name="com.example.betondecken.ui.analytic.AnalyticFragment"
@@ -32,4 +46,22 @@
         android:name="com.example.betondecken.ui.logout.LogoutFragment"
         android:label="@string/menu_logout"
         tools:layout="@layout/activity_login"/>
+    <!-- Fragmento Pedidos -->
+    <fragment
+        android:id="@+id/nav_pedidos"
+        android:name="com.example.betondecken.ui.pedidos.PedidosFragment"
+        android:label="@string/pedidos"
+        tools:layout="@layout/fragment_pedidos" />
+
+    <!-- Fragmento Servicio al Cliente -->
+<!--    <fragment-->
+<!--        android:id="@+id/nav_servicio"-->
+<!--        android:name="com.example.betondecken.ui.servicio.ServicioFragment"-->
+<!--        android:label="@string/menu_servicio"-->
+<!--        tools:layout="@layout/fragment_servicio" />-->
+    <fragment
+        android:id="@+id/nav_servicio"
+        android:name="com.example.betondecken.ui.support.SupportFragment"
+        android:label="@string/cliente"
+        tools:layout="@layout/fragment_support" />
 </navigation>

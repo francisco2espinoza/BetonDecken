@@ -96,24 +96,53 @@
         app:layout_constraintTop_toTopOf="@+id/linearLayout1"
         tools:ignore="MissingConstraints">
 
-        <ImageView
+
+        <ImageButton
+            android:id="@+id/btn_pedidos"
             android:layout_width="104dp"
             android:layout_height="143dp"
             android:layout_gravity="left"
-            android:src="@drawable/ic_track_pedidos"
-            />
-        <ImageView
-            android:layout_width="104dp"
-            android:layout_height="143dp"
+            android:layout_margin="8dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:src="@drawable/ic_track_contact_support"
-            />
-        <ImageView
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="@string/pedidos"
+            android:focusable="true"
+            android:src="@drawable/ic_track_pedidos"
+            android:scaleType="fitCenter" />
+
+
+        <ImageButton
+            android:id="@+id/btn_contacto"
             android:layout_width="104dp"
             android:layout_height="143dp"
+            android:layout_gravity="left"
+            android:layout_margin="8dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="@string/soporte"
+            android:focusable="true"
+            android:src="@drawable/ic_track_contact_support"
+            android:scaleType="fitCenter" />
+
+        <ImageButton
+            android:id="@+id/btn_servicio"
+            android:layout_width="104dp"
+            android:layout_height="143dp"
+            android:layout_gravity="left"
+            android:layout_margin="8dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="@string/cliente"
+            android:focusable="true"
             android:src="@drawable/ic_track_client_service"
-            />
+            android:scaleType="fitCenter" />
+
     </LinearLayout>
 
 

@@ -22,4 +22,8 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Ingreso fallido"</string>
     <string name="profile_picture">Foto de perfil</string>
+    <string name="send_email">Enviar correo electrónico</string>
+    <string name="pedidos">Pedidos</string>
+    <string name="soporte">Contacta a Soporte</string>
+    <string name="cliente">Servicio al Cliente</string>
 </resources>
