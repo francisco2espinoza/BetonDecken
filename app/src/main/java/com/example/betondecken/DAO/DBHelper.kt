@@ -3,6 +3,7 @@ package com.example.betondecken.DAO
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.example.betondecken.Util.Tools
 
 class DBHelper(myContext: Context): SQLiteOpenHelper(myContext, DATABASE_NAME, null, DATABASE_VERSION) {
 
@@ -29,7 +30,9 @@ class DBHelper(myContext: Context): SQLiteOpenHelper(myContext, DATABASE_NAME, n
         oldVersion: Int,
         newVersion: Int
     ) {
-        TODO("Not yet implemented")
+        db.execSQL("DROP TABLE IF EXISTS " + Tools.TABLA_USUARIOS)
+
+        onCreate(db)
     }
 
 

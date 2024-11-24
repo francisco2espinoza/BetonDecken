@@ -1,13 +1,9 @@
 package com.example.betondecken.DAO
-
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
-import android.content.Intent
 import android.database.Cursor
 import android.util.Log
-import android.widget.Toast
-import com.example.betondecken.MainActivity
 import com.example.betondecken.Model.Usuario
 import com.example.betondecken.Util.Tools
 
@@ -33,7 +29,7 @@ class UsuarioDAO(myContext: Context) {
 
             indice = db.insert(Tools.TABLA_USUARIOS, null, values)
 
-            Log.i(Tools.LOGTAG,"usuario indice: " + indice)
+            Log.i(Tools.LOGTAG,"usuario indice: " + indice.toString())
 
             return indice
         }catch (e: Exception){

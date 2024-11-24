@@ -18,7 +18,8 @@
         app:layout_constraintBottom_toTopOf="@+id/buttonSignIn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logoconcreta1" />
+        app:srcCompat="@drawable/logoconcreta1"
+        android:contentDescription="@string/app_name"/>
 
     <Button
         android:id="@+id/buttonSignIn"
