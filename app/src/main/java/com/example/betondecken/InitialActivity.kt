@@ -30,7 +30,9 @@ class InitialActivity : AppCompatActivity() {
         }
 
         btn2.setOnClickListener {
-            Toast.makeText(this, "En mantenimiento", Toast.LENGTH_SHORT).show()
+            var intent = Intent(this, UsuarioActivity::class.java)
+            startActivity(intent)
+
         }
 
     }

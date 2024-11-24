@@ -13,6 +13,9 @@
         android:theme="@style/Theme.BetonDecken"
         tools:targetApi="31">
         <activity
+            android:name=".UsuarioActivity"
+            android:exported="false" />
+        <activity
             android:name=".InitialActivity"
             android:exported="true"
             android:theme="@style/Theme.BetonDecken.NoActionBar"
@@ -28,19 +31,17 @@
             android:exported="true"
             android:label="@string/title_activity_login"
             android:theme="@style/Theme.BetonDecken.NoActionBar"
-            tools:ignore="IntentFilterExportedReceiver">
-
-        </activity>
+            tools:ignore="IntentFilterExportedReceiver"></activity>
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.BetonDecken.NoActionBar"></activity>
+            android:theme="@style/Theme.BetonDecken.NoActionBar" />
         <activity
             android:name=".TrackingActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.BetonDecken.NoActionBar"></activity>
+            android:theme="@style/Theme.BetonDecken.NoActionBar" />
     </application>
 
 </manifest>

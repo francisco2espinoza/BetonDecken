@@ -1,7 +1,9 @@
 package com.example.betondecken.ui.login
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -9,19 +11,26 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
+import com.example.betondecken.DAO.DAOException
+import com.example.betondecken.DAO.UsuarioDAO
 import com.example.betondecken.MainActivity
+import com.example.betondecken.Model.Usuario
 import com.example.betondecken.databinding.ActivityLoginBinding
 
 import com.example.betondecken.R
+import com.example.betondecken.Util.Tools
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
+
+    lateinit var preferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,11 +40,25 @@ class LoginActivity : AppCompatActivity() {
 
         val username = binding.username
         val password = binding.password
-        val login = binding.login
+        val login = binding.btnLogin
         val loading = binding.loading
 
-        username.setText("grupo3@gmail.com")
-        password.setText("123456")
+        preferences = getSharedPreferences("com.concreta_preferences", Context.MODE_PRIVATE);
+
+        Log.i(Tools.LOGTAG, "lectura de preferencia: " + preferences.getBoolean("RecordarPassword",false))
+
+        if (preferences.getBoolean("RecordarPassword",false)){
+            //mCbxRecordarPassword.setChecked(true);
+            username.setText(preferences.getString("LastUser",""));
+            password.setText(preferences.getString("LastPassword",""));
+
+            val  dato = preferences.getString("LastUser","");
+
+            Log.i(Tools.LOGTAG,"LastUser: " + preferences.getString("LastUser",""))
+            Log.i(Tools.LOGTAG,"LastPassword: " + preferences.getString("LastPassword",""))
+
+        }
+
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
@@ -130,8 +153,49 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private  fun loginSuccessfullAndOpen(){
-        var intent = Intent(this, MainActivity::class.java)
-        startActivity(intent);
+
+         var resultado: Long
+        // validar existencia de usuario
+        val username = binding.username.text.toString()
+        val password = binding.password.text.toString()
+
+        val dao = UsuarioDAO(baseContext)
+
+        try {
+
+            Log.i(Tools.LOGTAG,username)
+            Log.i(Tools.LOGTAG,password)
+
+            resultado  = dao.fnValidarLogin(username, password)
+
+            Log.i(Tools.LOGTAG,"resultado " + resultado)
+
+        }catch (e: Exception){
+            throw DAOException("GeneroMusicalDAO: Error al obtener: " + e.message)
+        }
+
+        if (resultado == 1.toLong()){
+
+
+            Log.i(Tools.LOGTAG, "guardando preferencia")
+
+            val editorPreferences = preferences.edit()
+            editorPreferences.putString("LastUser",username)
+            editorPreferences.putString("LastPassword",password)
+            editorPreferences.putBoolean("RecordarPassword",true);
+            editorPreferences.apply()
+            editorPreferences.commit()
+
+            var intent = Intent(this, MainActivity::class.java)
+            startActivity(intent);
+
+        }else{
+            Toast.makeText(applicationContext, "No existe el usuario", Toast.LENGTH_LONG).show()
+        }
+
+
+
+
     }
 }
 
