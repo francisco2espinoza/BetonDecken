@@ -26,6 +26,7 @@ class UsuarioActivity : AppCompatActivity() {
     }
 
     fun fnGrabarNuevoUsuario(view: View){
+
         val nombre = findViewById<EditText>(R.id.editTextNombres)
         val usuario = findViewById<EditText>(R.id.editTextEmail)
         val password = findViewById<EditText>(R.id.editTextPassword)
