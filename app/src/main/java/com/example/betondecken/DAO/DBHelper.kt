@@ -12,7 +12,7 @@ class DBHelper(myContext: Context) : SQLiteOpenHelper(myContext, DATABASE_NAME, 
 
     companion object {
         private const val DATABASE_NAME = "concreta_db" // Nombre de la base de datos
-        private const val DATABASE_VERSION = 1         // Versión de la base de datos
+        private const val DATABASE_VERSION = 2         // Versión de la base de datos
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -30,7 +30,7 @@ class DBHelper(myContext: Context) : SQLiteOpenHelper(myContext, DATABASE_NAME, 
         """
         db.execSQL(sql_usuario)
 
-        // Crear la tabla de pedidos
+        // Crear la tabla de pedidos.
         val sql_pedido = """
             CREATE TABLE ${Tools.TABLA_PEDIDOS} (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -38,20 +38,20 @@ class DBHelper(myContext: Context) : SQLiteOpenHelper(myContext, DATABASE_NAME, 
                 id_tracking TEXT,
                 fecha DATE,
                 descripcion TEXT NOT NULL,
+                id_producto INTEGER,
                 peso NUMERIC,
                 estado INTEGER,
-                FOREIGN KEY (id_usuario) REFERENCES ${Tools.TABLA_USUARIOS}(id_usuario)
-            )
-        """
+                FOREIGN KEY (id_usuario) REFERENCES ${Tools.TABLA_USUARIOS}(id_usuario),
+                FOREIGN KEY (id_producto) REFERENCES ${Tools.TABLA_PRODUCTOS}(id_producto))
+         """
         db.execSQL(sql_pedido)
 
         // Crear la tabla de productos
         val sql_producto = """
             CREATE TABLE ${Tools.TABLA_PRODUCTOS}(
-                cod_producto TEXT PRIMARY KEY,
+                id_producto INTEGER PRIMARY KEY AUTOINCREMENT,
                 des_producto TEXT,
-                peso_kg INTEGER
-            )
+                peso_kg INTEGER)
         """
         db.execSQL(sql_producto)
 
@@ -59,8 +59,7 @@ class DBHelper(myContext: Context) : SQLiteOpenHelper(myContext, DATABASE_NAME, 
         val sql_estado_pedido = """
             CREATE TABLE ${Tools.TABLA_ESTADOS_PEDIDO} (
                 cod_estado TEXT PRIMARY KEY,
-                des_estado TEXT
-            )
+                des_estado TEXT)
         """
         db.execSQL(sql_estado_pedido)
 
@@ -72,8 +71,7 @@ class DBHelper(myContext: Context) : SQLiteOpenHelper(myContext, DATABASE_NAME, 
                 cod_estado TEXT NOT NULL,
                 PRIMARY KEY (n_pedido, cod_estado),
                 FOREIGN KEY (n_pedido) REFERENCES ${Tools.TABLA_PEDIDOS} (id),
-                FOREIGN KEY (cod_estado) REFERENCES ${Tools.TABLA_ESTADOS_PEDIDO} (cod_estado)
-            )
+                FOREIGN KEY (cod_estado) REFERENCES ${Tools.TABLA_ESTADOS_PEDIDO} (cod_estado))
         """
         db.execSQL(sql_pedido_trazabilidad)
     }
@@ -89,22 +87,24 @@ class DBHelper(myContext: Context) : SQLiteOpenHelper(myContext, DATABASE_NAME, 
     }
 
     // Método para obtener pedidos de un usuario específico
-    fun getPedidos(usuarioId: String): Cursor {
+    fun getPedidos(emailUsuario: String): Cursor {
         val db = this.readableDatabase
         val cursor = db.rawQuery(
             """
-            SELECT p.id, p.fecha, p.descripcion, p.peso, e.des_estado
-            FROM ${Tools.TABLA_PEDIDOS} p
-            LEFT JOIN ${Tools.TABLA_ESTADOS_PEDIDO} e ON p.estado = e.cod_estado
-            WHERE p.id_usuario = ?
-            """.trimIndent(),
-            arrayOf(usuarioId)
+        SELECT p.id, p.fecha, p.descripcion, p.peso, e.des_estado
+        FROM ${Tools.TABLA_PEDIDOS} p
+        LEFT JOIN ${Tools.TABLA_ESTADOS_PEDIDO} e ON p.estado = e.cod_estado
+        WHERE p.id_usuario = (
+            SELECT id FROM ${Tools.TABLA_USUARIOS} WHERE id_usuario = ?
+        )
+        """.trimIndent(),
+            arrayOf(emailUsuario)
         )
         // Depuración
         if (cursor.count == 0) {
-            android.util.Log.d(Tools.LOGTAG, "No se encontraron pedidos para el usuario $usuarioId")
+            android.util.Log.d(Tools.LOGTAG, "No se encontraron pedidos para el usuario $emailUsuario")
         } else {
-            android.util.Log.d(Tools.LOGTAG, "Pedidos encontrados para el usuario $usuarioId: ${cursor.count}")
+            android.util.Log.d(Tools.LOGTAG, "Pedidos encontrados para el usuario $emailUsuario: ${cursor.count}")
         }
         return cursor
     }
@@ -121,15 +121,31 @@ class DBHelper(myContext: Context) : SQLiteOpenHelper(myContext, DATABASE_NAME, 
     }
 
     // Método para insertar un nuevo pedido
-    fun insertPedido(idUsuario: String, idTracking: String, fecha: String, descripcion: String, peso: Double, estado: Int): Long {
+    fun insertPedido(
+        idUsuario: String,
+        idTracking: String,
+        fecha: String,
+        descripcion: String,
+        peso: Double,
+        estado: Int,
+        idProducto: Int? = null
+    ): Long {
         val db = this.writableDatabase
-        val sql = """
-            INSERT INTO ${Tools.TABLA_PEDIDOS} (id_usuario, id_tracking, fecha, descripcion, peso, estado)
-            VALUES ('$idUsuario', '$idTracking', '$fecha', '$descripcion', $peso, $estado)
+        val sql = if (idProducto != null) {
+            """
+        INSERT INTO ${Tools.TABLA_PEDIDOS} (id_usuario, id_tracking, fecha, descripcion, peso, estado, id_producto)
+        VALUES ('$idUsuario', '$idTracking', '$fecha', '$descripcion', $peso, $estado, $idProducto)
         """
+        } else {
+            """
+        INSERT INTO ${Tools.TABLA_PEDIDOS} (id_usuario, id_tracking, fecha, descripcion, peso, estado)
+        VALUES ('$idUsuario', '$idTracking', '$fecha', '$descripcion', $peso, $estado)
+        """
+        }
         db.execSQL(sql)
         return db.insert(Tools.TABLA_PEDIDOS, null, null)
     }
+
 
     // Método para obtener la información de un usuario específico
     @SuppressLint("Range")

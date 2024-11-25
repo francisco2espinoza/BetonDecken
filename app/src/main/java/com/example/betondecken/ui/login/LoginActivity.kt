@@ -150,6 +150,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun loginSuccessfullAndOpen() {
+
         val username = binding.username.text.toString()
         val password = binding.password.text.toString()
 
@@ -166,7 +167,7 @@ class LoginActivity : AppCompatActivity() {
 
                 // Guardar id_usuario en SharedPreferences
                 val editorPreferences = preferences.edit()
-                editorPreferences.putString("id_usuario", idUsuario) // Guardamos el id_usuario
+                editorPreferences.putString("id_usuario", idUsuario) // Guardamos el id_usuario.
                 editorPreferences.putString("LastUser", username)
                 editorPreferences.putString("LastPassword", password)
                 editorPreferences.putBoolean("RecordarPassword", true)
