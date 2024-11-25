@@ -3,11 +3,8 @@ package com.example.betondecken.DAO
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
-import android.content.Intent
 import android.database.Cursor
 import android.util.Log
-import android.widget.Toast
-import com.example.betondecken.MainActivity
 import com.example.betondecken.Model.Usuario
 import com.example.betondecken.Util.Tools
 
@@ -15,83 +12,92 @@ class UsuarioDAO(myContext: Context) {
 
     private var dbHelper: DBHelper = DBHelper(myContext)
 
-    fun insertarUsuario( nombre: String, usuario: String, password: String): Long{
-
-        Log.i(Tools.LOGTAG,"ingresando a insertar usuario")
-
-        val indice: Long
+    fun insertarUsuario(nombre: String, usuario: String, password: String): Long {
+        Log.i(Tools.LOGTAG, "ingresando a insertar usuario")
 
         val values = ContentValues().apply {
             put("nombre", nombre)
             put("id_usuario", usuario)
-            put("password",password)
+            put("password", password)
         }
 
         val db = dbHelper.writableDatabase
 
-        try {
-
-            indice = db.insert(Tools.TABLA_USUARIOS, null, values)
-
-            Log.i(Tools.LOGTAG,"usuario indice: " + indice)
-
-            return indice
-        }catch (e: Exception){
+        return try {
+            val indice = db.insert(Tools.TABLA_USUARIOS, null, values)
+            Log.i(Tools.LOGTAG, "usuario indice: $indice")
+            indice
+        } catch (e: Exception) {
             throw DAOException("UsuariosDAO: Error al insertar: " + e.message)
-        }finally {
+        } finally {
             db.close()
         }
-
     }
 
     @SuppressLint("Range")
-    fun fnValidarLogin(usuarioIn: String, passwordIn: String): Long{
-        Log.i(Tools.LOGTAG,"ingresando a fnValidarLogin")
+    fun fnValidarLogin(usuarioIn: String, passwordIn: String): Long {
+        Log.i(Tools.LOGTAG, "ingresando a fnValidarLogin")
 
-        var result: Long
-
+        var result: Long = 0
         val db = dbHelper.readableDatabase
 
-        val modelo = Usuario()
-
-        result = 0
-
         try {
-            val c: Cursor = db.rawQuery("select id, nombre, id_usuario, password from " + Tools.TABLA_USUARIOS + " WHERE id_usuario='$usuarioIn' and password='$passwordIn'", null)
+            val c: Cursor = db.rawQuery(
+                "SELECT id, nombre, id_usuario, password FROM ${Tools.TABLA_USUARIOS} WHERE id_usuario=? AND password=?",
+                arrayOf(usuarioIn, passwordIn)
+            )
 
-            Log.i(Tools.LOGTAG,"cantidad: " + c.count)
+            Log.i(Tools.LOGTAG, "cantidad: ${c.count}")
 
-            if (c.count > 0){
-
+            if (c.count > 0) {
                 c.moveToNext()
-                do{
-                    val id: Int         = c.getInt(c.getColumnIndex("id"))
-                    val nombre: String  = c.getString(c.getColumnIndex("nombre"))
-                    val usuario:String  = c.getString(c.getColumnIndex("id_usuario"))
-                    val password: String= c.getString(c.getColumnIndex("password"))
+                do {
+                    val id = c.getInt(c.getColumnIndex("id"))
+                    val nombre = c.getString(c.getColumnIndex("nombre"))
+                    val usuario = c.getString(c.getColumnIndex("id_usuario"))
+                    val password = c.getString(c.getColumnIndex("password"))
 
-                    modelo.id           = id
-                    modelo.nombre       = nombre
-                    modelo.usuario      = usuario
-                    modelo.passwoord    = password
-
-                    if (modelo.usuario == usuarioIn && modelo.passwoord == passwordIn){
+                    if (usuario == usuarioIn && password == passwordIn) {
                         result = 1
                     }
-
-                }while(c.moveToNext())
-
+                } while (c.moveToNext())
             }
             c.close()
-        }catch (e: Exception){
-            throw DAOException("GeneroMusicalDAO: Error al obtener: " + e.message)
-        }finally {
+        } catch (e: Exception) {
+            throw DAOException("UsuarioDAO: Error al validar login: ${e.message}")
+        } finally {
             db.close()
         }
 
         return result
-
-
     }
 
+    @SuppressLint("Range")
+    fun fnObtenerIdUsuario(username: String, password: String): String? {
+        Log.i(Tools.LOGTAG, "Ingresando a fnObtenerIdUsuario")
+
+        val db = dbHelper.readableDatabase
+
+        return try {
+            val c: Cursor = db.rawQuery(
+                "SELECT id_usuario FROM ${Tools.TABLA_USUARIOS} WHERE id_usuario=? AND password=?",
+                arrayOf(username, password)
+            )
+
+            if (c.moveToFirst()) {
+                val idUsuario = c.getString(c.getColumnIndex("id_usuario"))
+                Log.i(Tools.LOGTAG, "id_usuario encontrado: $idUsuario")
+                idUsuario
+            } else {
+                Log.w(Tools.LOGTAG, "No se encontró el id_usuario para las credenciales proporcionadas")
+                null
+            }.also {
+                c.close()
+            }
+        } catch (e: Exception) {
+            throw DAOException("UsuarioDAO: Error al obtener id_usuario: ${e.message}")
+        } finally {
+            db.close()
+        }
+    }
 }

@@ -152,51 +152,45 @@ class LoginActivity : AppCompatActivity() {
         Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
     }
 
-    private  fun loginSuccessfullAndOpen(){
-
-         var resultado: Long
-        // validar existencia de usuario
+    private fun loginSuccessfullAndOpen() {
         val username = binding.username.text.toString()
         val password = binding.password.text.toString()
 
         val dao = UsuarioDAO(baseContext)
 
         try {
+            Log.i(Tools.LOGTAG, "Intentando login con username: $username y password: $password")
 
-            Log.i(Tools.LOGTAG,username)
-            Log.i(Tools.LOGTAG,password)
+            // Validar existencia del usuario
+            val idUsuario = dao.fnObtenerIdUsuario(username, password)
 
-            resultado  = dao.fnValidarLogin(username, password)
+            if (idUsuario != null) {
+                Log.i(Tools.LOGTAG, "Login exitoso para el usuario: $idUsuario")
 
-            Log.i(Tools.LOGTAG,"resultado " + resultado)
+                // Guardar id_usuario en SharedPreferences
+                val editorPreferences = preferences.edit()
+                editorPreferences.putString("id_usuario", idUsuario) // Guardamos el id_usuario
+                editorPreferences.putString("LastUser", username)
+                editorPreferences.putString("LastPassword", password)
+                editorPreferences.putBoolean("RecordarPassword", true)
+                editorPreferences.apply()
 
-        }catch (e: Exception){
-            throw DAOException("GeneroMusicalDAO: Error al obtener: " + e.message)
+                Log.i(Tools.LOGTAG, "id_usuario guardado en SharedPreferences")
+
+                // Navegar a MainActivity
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            } else {
+                Toast.makeText(applicationContext, "Usuario o contraseña incorrectos", Toast.LENGTH_LONG).show()
+            }
+
+        } catch (e: Exception) {
+            Log.e(Tools.LOGTAG, "Error al validar login: ${e.message}")
+            throw DAOException("UsuarioDAO: Error al validar login: ${e.message}")
         }
-
-        if (resultado == 1.toLong()){
-
-
-            Log.i(Tools.LOGTAG, "guardando preferencia")
-
-            val editorPreferences = preferences.edit()
-            editorPreferences.putString("LastUser",username)
-            editorPreferences.putString("LastPassword",password)
-            editorPreferences.putBoolean("RecordarPassword",true);
-            editorPreferences.apply()
-            editorPreferences.commit()
-
-            var intent = Intent(this, MainActivity::class.java)
-            startActivity(intent);
-
-        }else{
-            Toast.makeText(applicationContext, "No existe el usuario", Toast.LENGTH_LONG).show()
-        }
-
-
-
-
     }
+
 }
 
 /**
