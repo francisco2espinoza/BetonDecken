@@ -19,7 +19,6 @@ import android.widget.Toast
 import com.example.betondecken.DAO.DAOException
 import com.example.betondecken.DAO.UsuarioDAO
 import com.example.betondecken.MainActivity
-import com.example.betondecken.Model.Usuario
 import com.example.betondecken.databinding.ActivityLoginBinding
 
 import com.example.betondecken.R
@@ -45,17 +44,15 @@ class LoginActivity : AppCompatActivity() {
 
         preferences = getSharedPreferences("com.concreta_preferences", Context.MODE_PRIVATE);
 
-        Log.i(Tools.LOGTAG, "lectura de preferencia: " + preferences.getBoolean("RecordarPassword",false))
+        Log.i(Tools.LOGTAG, "lectura de preferencia: " + preferences.getBoolean("RecordarPassword",false).toString())
 
         if (preferences.getBoolean("RecordarPassword",false)){
             //mCbxRecordarPassword.setChecked(true);
             username.setText(preferences.getString("LastUser",""));
             password.setText(preferences.getString("LastPassword",""));
 
-            val  dato = preferences.getString("LastUser","");
-
-            Log.i(Tools.LOGTAG,"LastUser: " + preferences.getString("LastUser",""))
-            Log.i(Tools.LOGTAG,"LastPassword: " + preferences.getString("LastPassword",""))
+            //Log.i(Tools.LOGTAG,"LastUser: " + preferences.getString("LastUser",""))
+            //Log.i(Tools.LOGTAG,"LastPassword: " + preferences.getString("LastPassword",""))
 
         }
 
