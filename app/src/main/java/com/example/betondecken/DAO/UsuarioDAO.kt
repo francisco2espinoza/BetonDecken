@@ -5,7 +5,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.util.Log
-import com.example.betondecken.Model.Usuario
+//import com.example.betondecken.Model.Usuario
 import com.example.betondecken.Util.Tools
 
 class UsuarioDAO(myContext: Context) {

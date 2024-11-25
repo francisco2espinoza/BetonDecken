@@ -73,7 +73,7 @@ class PedidosFragment : Fragment() {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_pedidos, container, false)
 
-        // Recuperar el id_usuario desde SharedPreferences
+        // Recuperar el id_usuario desde SharedPreferences.
         val sharedPreferences = requireContext().getSharedPreferences("com.concreta_preferences", android.content.Context.MODE_PRIVATE)
         val idUsuario = sharedPreferences.getString("id_usuario", null)
 

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.betondecken.R
-
+//
 data class Pedido(val nPedido: Int, val fecha: String, val producto: String, val peso: Int)
 
 class PedidosAdapter(private val pedidosList: List<Pedido>) :

@@ -30,7 +30,7 @@ class DBHelper(myContext: Context) : SQLiteOpenHelper(myContext, DATABASE_NAME, 
         """
         db.execSQL(sql_usuario)
 
-        // Crear la tabla de pedidos
+        // Crear la tabla de pedidos.
         val sql_pedido = """
             CREATE TABLE ${Tools.TABLA_PEDIDOS} (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,

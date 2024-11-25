@@ -32,7 +32,7 @@ class AccountFragment : Fragment() {
             return root
         }
 
-        // Consultar información del usuario
+        // Consultar información del usuario..
         val dbHelper = DBHelper(requireContext())
         val usuario: Usuario? = dbHelper.getUsuarioInfo(idUsuario)
 
