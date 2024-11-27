@@ -47,6 +47,7 @@
             />
 
         <EditText
+            android:id="@+id/editTextIdTracking"
             android:layout_width="match_parent"
             android:layout_height="48sp"
             android:layout_marginLeft="16dp"
