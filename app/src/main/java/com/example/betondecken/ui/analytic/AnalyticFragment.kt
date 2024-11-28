@@ -9,9 +9,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.betondecken.DAO.UsuarioDAO
-import com.example.betondecken.databinding.FragmentAnalyticBinding
 import com.example.betondecken.Util.Tools
-import com.example.betondecken.DAO.DBHelper
+import com.example.betondecken.databinding.FragmentAnalyticBinding
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.utils.ColorTemplate
 
 class AnalyticFragment : Fragment() {
 
@@ -37,7 +43,6 @@ class AnalyticFragment : Fragment() {
         Log.d(Tools.LOGTAG, "ID de usuario obtenido para AnalyticFragment: $userId")
 
         if (userId == -1) {
-            // ID de usuario no encontrado, muestra un mensaje y redirige si es necesario
             Toast.makeText(requireContext(), "Usuario no autenticado, por favor inicia sesión", Toast.LENGTH_SHORT).show()
             Log.e(Tools.LOGTAG, "El ID de usuario no es válido. Redirigiendo...")
             return binding.root
@@ -52,6 +57,9 @@ class AnalyticFragment : Fragment() {
             val ultimosPedidos = usuarioDAO.getUltimosPedidos(userId)
             mostrarUltimosPedidos(ultimosPedidos)
 
+            // Configurar el gráfico de barras
+            configurarBarChart(ultimosPedidos)
+
         } catch (e: Exception) {
             Log.e(Tools.LOGTAG, "Error al obtener datos: ${e.message}")
             Toast.makeText(requireContext(), "Error al cargar datos", Toast.LENGTH_SHORT).show()
@@ -60,24 +68,20 @@ class AnalyticFragment : Fragment() {
         return binding.root
     }
 
-
     private fun mostrarEstadisticas(estadisticas: List<Map<String, Any>>) {
         val textViews = listOf(
             binding.textView, binding.textView2, binding.textView3,
             binding.textView4, binding.textView5
         )
 
-        // Asegúrate de que no haya más de 5 meses
         for (i in estadisticas.indices) {
             val mes = estadisticas[i]["mes"] as String
             val pedidos = estadisticas[i]["pedidos"] as Int
-
-            // Actualiza cada TextView con el mes y los pedidos
             textViews[i].text = "$mes: $pedidos pedidos"
         }
     }
+
     private fun mostrarUltimosPedidos(ultimosPedidos: List<Map<String, String>>) {
-        // Configuramos dinámicamente los pedidos
         val pedidosTextViews = listOf(binding.textDespacho, binding.textTransito, binding.textEntregado)
         val fechasTextViews = listOf(binding.timeDespacho, binding.timeTransito, binding.timeEntregado)
 
@@ -87,8 +91,58 @@ class AnalyticFragment : Fragment() {
         }
     }
 
+    private fun configurarBarChart(ultimosPedidos: List<Map<String, String>>) {
+        val barChart = binding.barChart
 
+        // Lista de entradas para el gráfico
+        val barEntries = ultimosPedidos.mapIndexed { index, pedido ->
+            val peso = pedido["peso"]?.toFloatOrNull() ?: 0f // Asegura un valor numérico válido
+            BarEntry(index.toFloat(), peso)
+        }
 
+        // Configuración del DataSet
+        val barDataSet = BarDataSet(barEntries, "Últimos Pedidos")
+        barDataSet.colors = ColorTemplate.COLORFUL_COLORS.toList()
+        barDataSet.valueTextColor = android.graphics.Color.WHITE // Color de los valores en las barras
+        barDataSet.valueTextSize = 12f // Tamaño del texto en las barras
+
+        // Configuración del BarData
+        val barData = BarData(barDataSet)
+        barData.barWidth = 0.5f
+        barChart.data = barData
+
+        // Configuración del eje X
+        val xAxis: XAxis = barChart.xAxis
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.setDrawGridLines(false)
+        xAxis.granularity = 1f
+        xAxis.textColor = android.graphics.Color.WHITE // Cambia el color del texto del eje X
+        xAxis.textSize = 12f
+        xAxis.valueFormatter = object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return ultimosPedidos.getOrNull(value.toInt())?.get("fecha") ?: ""
+            }
+        }
+
+        // Configuración del eje Y izquierdo
+        val yAxisLeft: YAxis = barChart.axisLeft
+        yAxisLeft.textColor = android.graphics.Color.WHITE // Cambia el color del texto del eje Y izquierdo
+        yAxisLeft.textSize = 12f
+        yAxisLeft.setDrawGridLines(false)
+        yAxisLeft.axisMinimum = 0f // Establece un valor mínimo para que las barras no queden ocultas
+
+        // Deshabilitar el eje Y derecho
+        val yAxisRight: YAxis = barChart.axisRight
+        yAxisRight.isEnabled = false
+
+        // Personalización adicional del gráfico
+        barChart.description.isEnabled = false
+        barChart.animateY(1000)
+        barChart.setFitBars(true)
+
+        // Actualizar el gráfico
+        barChart.invalidate()
+    }
 
 
     override fun onDestroyView() {

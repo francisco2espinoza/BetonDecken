@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.activity)
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     // Testing
     testImplementation(libs.junit)

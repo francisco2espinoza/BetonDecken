@@ -160,7 +160,7 @@ class UsuarioDAO(context: Context) {
 
         val cursor = db.rawQuery(
             """
-        SELECT descripcion, fecha 
+        SELECT descripcion, fecha, peso -- Asegúrate de que 'peso' exista en tu tabla
         FROM ${Tools.TABLA_PEDIDOS}
         WHERE id_usuario = ?
         ORDER BY fecha DESC
@@ -173,11 +173,13 @@ class UsuarioDAO(context: Context) {
             do {
                 val descripcion = cursor.getString(cursor.getColumnIndexOrThrow("descripcion"))
                 val fecha = cursor.getString(cursor.getColumnIndexOrThrow("fecha"))
-                pedidos.add(mapOf("pedido" to descripcion, "fecha" to fecha))
+                val peso = cursor.getString(cursor.getColumnIndexOrThrow("peso")) // Incluye peso
+                pedidos.add(mapOf("pedido" to descripcion, "fecha" to fecha, "peso" to peso))
             } while (cursor.moveToNext())
         }
         cursor.close()
         return pedidos
     }
+
 
 }
