@@ -2,16 +2,18 @@ package com.example.betondecken
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.betondecken.DAO.ProductoDAO
+import com.example.betondecken.DAO.TrazabilidadDAO
 import com.example.betondecken.Model.Pedido
+import com.example.betondecken.Model.Producto
+import com.example.betondecken.Model.Trazabilidad
 import com.example.betondecken.Util.Tools
-import com.example.betondecken.ui.pedidos.PedidosFragment
 
 class TrackingActivity : AppCompatActivity() {
 
@@ -31,7 +33,7 @@ class TrackingActivity : AppCompatActivity() {
 
         idPedido    = bundle?.getString("idPedido")!!
         idTracking  = bundle?.getString("idTracking")!!
-        val pedido = intent.getSerializableExtra("extra_object")  as Pedido
+        val pedidoRequest = intent.getSerializableExtra("extra_object")  as Pedido
 
         val textTracking = findViewById<TextView>(R.id.textViewIdTracking)
         val textViewEstadoPedido = findViewById<TextView>(R.id.textViewEstadoPedido)
@@ -39,13 +41,25 @@ class TrackingActivity : AppCompatActivity() {
         val textViewDescripcion = findViewById<TextView>(R.id.textViewDescripcion)
         val textViewProducto    = findViewById<TextView>(R.id.textViewProducto)
 
-        Log.i(Tools.LOGTAG,"id_traking_recibe desde extra: " + pedido.id_tracking)
+        Log.i(Tools.LOGTAG,"id_traking_recibe desde extra: " + pedidoRequest.id_tracking)
 
-        textTracking.setText(pedido.id_tracking)
-        textViewEstadoPedido.setText(pedido.desEstado)
-        textViewPeso.setText(pedido.peso.toString() + " KG")
-        textViewDescripcion.setText(pedido.descripcion)
-        textViewProducto.setText(pedido.id_producto.toString())
+        textTracking.setText(pedidoRequest.id_tracking)
+        textViewEstadoPedido.setText(pedidoRequest.desEstado)
+        textViewPeso.setText(pedidoRequest.peso.toString() + " KG")
+        textViewDescripcion.setText(pedidoRequest.descripcion)
+        textViewProducto.setText(pedidoRequest.id_producto.toString())
+
+        // obtener la descripcion del producto a partir del id
+        var daoProducto = ProductoDAO(baseContext)
+
+        lateinit var producto: Producto
+
+        producto = daoProducto.fnObtenerProductoById(pedidoRequest.id_producto)
+
+        textViewProducto.setText(producto.des_producto)
+
+        // fin obtener producto
+
 
         recicleView = findViewById(R.id.recicleView_estado)
         mAdapter    = EstadosAdapter(estadosList)
@@ -61,18 +75,35 @@ class TrackingActivity : AppCompatActivity() {
             insets
         }
 
-        preparePeliculaData()
+        preparePeliculaData(pedidoRequest.id)
     }
 
-    private fun preparePeliculaData() {
-        var estado = Estados("Preparando despacho", "Jicamarca, Perú", "11:45 A.M")
-        estadosList.add(estado)
+    private fun preparePeliculaData(idPedido: Int) {
 
-        estado = Estados("Despacho en tránsito", "", "11:55 AM")
-        estadosList.add(estado)
+        var daoTrazabilidad = TrazabilidadDAO(baseContext)
 
-        estado = Estados("Pedido entregado", "", "13:15 AM")
-        estadosList.add(estado)
+        lateinit var trazabilidad: ArrayList<Trazabilidad>
+
+        trazabilidad = daoTrazabilidad.fnObtenerTrazabilidadByPedido(idPedido)
+
+        var index:Int = 0
+        var desEStado: String
+
+        for (num in trazabilidad){
+            Log.i(Tools.LOGTAG,"leyendod: " + trazabilidad[index].fec_trazabilidad)
+
+            when(trazabilidad[index].id_estado){
+                1-> desEStado = "Pedido Generado"
+                2-> desEStado = "Pedido Aprobado"
+                3-> desEStado = "Preparando despacho"
+                4-> desEStado = "Despacho en tránsito"
+                5-> desEStado = "Despacho entregado"
+                else-> desEStado = "Pedido Generado"
+            }
+            var estado = Estados(desEStado, "", trazabilidad[index].fec_trazabilidad)
+            estadosList.add(estado)
+            index++
+        }
 
         mAdapter.notifyDataSetChanged()
     }

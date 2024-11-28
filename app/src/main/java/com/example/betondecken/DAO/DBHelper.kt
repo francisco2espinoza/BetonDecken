@@ -204,7 +204,7 @@ class DBHelper(myContext: Context) : SQLiteOpenHelper(myContext, DATABASE_NAME, 
 
     companion object {
         private const val DATABASE_NAME = "concreta_db" // Nombre de la base de datos
-        private const val DATABASE_VERSION = 2         // Versión de la base de datos
+        private const val DATABASE_VERSION = 3         // Versión de la base de datos
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -275,6 +275,7 @@ class DBHelper(myContext: Context) : SQLiteOpenHelper(myContext, DATABASE_NAME, 
         db.execSQL("DROP TABLE IF EXISTS ${Tools.TABLA_PRODUCTOS}")
         db.execSQL("DROP TABLE IF EXISTS ${Tools.TABLA_ESTADOS_PEDIDO}")
         db.execSQL("DROP TABLE IF EXISTS ${Tools.TABLA_TRAZABILIDAD_PEDIDOS}")
+        db.execSQL("DROP TABLE IF EXISTS T_PEDIDIO_TRAZABILIDAD")
         onCreate(db)
     }
 
