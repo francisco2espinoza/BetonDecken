@@ -1,16 +1,63 @@
 package com.example.betondecken.DAO
-
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.util.Log
-//import com.example.betondecken.Model.Usuario
+import com.example.betondecken.Model.Usuario
 import com.example.betondecken.Util.Tools
 
-class UsuarioDAO(myContext: Context) {
+class UsuarioDAO(context: Context) {
+    private val dbHelper: DBHelper = DBHelper(context)
 
-    private var dbHelper: DBHelper = DBHelper(myContext)
+    fun getEstadisticas(idUsuario: String): List<Map<String, Any>> {
+            val db = dbHelper.readableDatabase
+            val estadisticas = mutableListOf<Map<String, Any>>()
+            val cursor = db.rawQuery(
+                """
+            SELECT strftime('%m', p.fecha) as mes, count(p.id_tracking) as pedidos
+            FROM TABLA_PEDIDOS p
+            WHERE p.id_usuario = ? 
+            AND p.fecha >= strftime('%Y-%m-%d', 'now', '-5 months')  -- Últimos 5 meses
+            GROUP BY strftime('%Y-%m', p.fecha)
+            ORDER BY p.fecha DESC  -- Ordenar de más reciente a más antiguo
+            LIMIT 5
+            """.trimIndent(),
+                arrayOf(idUsuario)
+            )
+
+            if (cursor.moveToFirst()) {
+                do {
+                    val mesNumero = cursor.getString(cursor.getColumnIndexOrThrow("mes"))
+                    val pedidos = cursor.getInt(cursor.getColumnIndexOrThrow("pedidos"))
+                    val mesNombre = when (mesNumero) {
+                        "01" -> "enero"
+                        "02" -> "febrero"
+                        "03" -> "marzo"
+                        "04" -> "abril"
+                        "05" -> "mayo"
+                        "06" -> "junio"
+                        "07" -> "julio"
+                        "08" -> "agosto"
+                        "09" -> "septiembre"
+                        "10" -> "octubre"
+                        "11" -> "noviembre"
+                        "12" -> "diciembre"
+                        else -> "desconocido"
+                    }
+
+                    estadisticas.add(
+                        mapOf(
+                            "mes" to mesNombre,
+                            "pedidos" to pedidos
+                        )
+                    )
+                } while (cursor.moveToNext())
+            }
+
+            cursor.close()
+            return estadisticas
+    }
 
     fun insertarUsuario(nombre: String, usuario: String, password: String): Long {
         Log.i(Tools.LOGTAG, "ingresando a insertar usuario")
