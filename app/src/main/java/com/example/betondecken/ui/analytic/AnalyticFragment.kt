@@ -26,15 +26,14 @@ class AnalyticFragment : Fragment() {
     ): View {
         _binding = FragmentAnalyticBinding.inflate(inflater, container, false)
 
-        // Inicializa el DBHelper y el UsuarioDAO
-        val dbHelper = DBHelper(requireContext())  // Asegúrate de que DBHelper está configurado correctamente
-        usuarioDAO = UsuarioDAO(dbHelper)
+        // Inicializa UsuarioDAO con el contexto del fragmento
+        usuarioDAO = UsuarioDAO(requireContext())  // 'requireContext()' es el Context del Fragment
 
         // Supongamos que el idUsuario está disponible, puedes obtenerlo de SharedPreferences o de algún otro lugar
-        val idUsuario = "usuario_123"  // Reemplaza esto con el id real del usuario
+        val idUsuario = "1"  // Reemplaza esto con el id real del usuario
 
         // Obtén las estadísticas de los últimos 5 meses
-        val estadisticas = usuarioDAO.getEstadisticas(idUsuario)  // Llama al método en la instancia de UsuarioDAO
+        val estadisticas = usuarioDAO.getEstadisticas(idUsuario)
 
         // Muestra los resultados en los TextView correspondientes
         mostrarEstadisticas(estadisticas)

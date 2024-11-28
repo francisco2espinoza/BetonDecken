@@ -7,7 +7,8 @@ import android.util.Log
 import com.example.betondecken.Model.Usuario
 import com.example.betondecken.Util.Tools
 
-class UsuarioDAO(private val dbHelper: DBHelper) {
+class UsuarioDAO(context: Context) {
+    private val dbHelper: DBHelper = DBHelper(context)
 
     fun getEstadisticas(idUsuario: String): List<Map<String, Any>> {
             val db = dbHelper.readableDatabase
