@@ -4,7 +4,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.util.Log
-import com.example.betondecken.Model.Usuario
 import com.example.betondecken.Util.Tools
 
 class UsuarioDAO(context: Context) {
@@ -13,17 +12,19 @@ class UsuarioDAO(context: Context) {
     fun getEstadisticas(idUsuario: String): List<Map<String, Any>> {
             val db = dbHelper.readableDatabase
             val estadisticas = mutableListOf<Map<String, Any>>()
+        // Log para verificar el ID del usuario
+        Log.d(Tools.LOGTAG, "Iniciando getEstadisticas con idUsuario: $idUsuario")
             val cursor = db.rawQuery(
                 """
             SELECT strftime('%m', p.fecha) as mes, count(p.id_tracking) as pedidos
-            FROM TABLA_PEDIDOS p
+            FROM ${Tools.TABLA_PEDIDOS} p
             WHERE p.id_usuario = ? 
             AND p.fecha >= strftime('%Y-%m-%d', 'now', '-5 months')  -- Últimos 5 meses
             GROUP BY strftime('%Y-%m', p.fecha)
             ORDER BY p.fecha DESC  -- Ordenar de más reciente a más antiguo
             LIMIT 5
             """.trimIndent(),
-                arrayOf(idUsuario)
+                arrayOf(idUsuario.toString())
             )
 
             if (cursor.moveToFirst()) {
