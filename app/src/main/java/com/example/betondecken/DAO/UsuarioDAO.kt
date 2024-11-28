@@ -1,4 +1,5 @@
 package com.example.betondecken.DAO
+
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
@@ -10,12 +11,12 @@ class UsuarioDAO(context: Context) {
     private val dbHelper: DBHelper = DBHelper(context)
 
     fun getEstadisticas(idUsuario: String): List<Map<String, Any>> {
-            val db = dbHelper.readableDatabase
-            val estadisticas = mutableListOf<Map<String, Any>>()
+        val db = dbHelper.readableDatabase
+        val estadisticas = mutableListOf<Map<String, Any>>()
         // Log para verificar el ID del usuario
         Log.d(Tools.LOGTAG, "Iniciando getEstadisticas con idUsuario: $idUsuario")
-            val cursor = db.rawQuery(
-                """
+        val cursor = db.rawQuery(
+            """
             SELECT strftime('%m', p.fecha) as mes, count(p.id_tracking) as pedidos
             FROM ${Tools.TABLA_PEDIDOS} p
             WHERE p.id_usuario = ? 
@@ -24,40 +25,40 @@ class UsuarioDAO(context: Context) {
             ORDER BY p.fecha DESC  -- Ordenar de más reciente a más antiguo
             LIMIT 5
             """.trimIndent(),
-                arrayOf(idUsuario.toString())
-            )
+            arrayOf(idUsuario.toString())
+        )
 
-            if (cursor.moveToFirst()) {
-                do {
-                    val mesNumero = cursor.getString(cursor.getColumnIndexOrThrow("mes"))
-                    val pedidos = cursor.getInt(cursor.getColumnIndexOrThrow("pedidos"))
-                    val mesNombre = when (mesNumero) {
-                        "01" -> "enero"
-                        "02" -> "febrero"
-                        "03" -> "marzo"
-                        "04" -> "abril"
-                        "05" -> "mayo"
-                        "06" -> "junio"
-                        "07" -> "julio"
-                        "08" -> "agosto"
-                        "09" -> "septiembre"
-                        "10" -> "octubre"
-                        "11" -> "noviembre"
-                        "12" -> "diciembre"
-                        else -> "desconocido"
-                    }
+        if (cursor.moveToFirst()) {
+            do {
+                val mesNumero = cursor.getString(cursor.getColumnIndexOrThrow("mes"))
+                val pedidos = cursor.getInt(cursor.getColumnIndexOrThrow("pedidos"))
+                val mesNombre = when (mesNumero) {
+                    "01" -> "enero"
+                    "02" -> "febrero"
+                    "03" -> "marzo"
+                    "04" -> "abril"
+                    "05" -> "mayo"
+                    "06" -> "junio"
+                    "07" -> "julio"
+                    "08" -> "agosto"
+                    "09" -> "septiembre"
+                    "10" -> "octubre"
+                    "11" -> "noviembre"
+                    "12" -> "diciembre"
+                    else -> "desconocido"
+                }
 
-                    estadisticas.add(
-                        mapOf(
-                            "mes" to mesNombre,
-                            "pedidos" to pedidos
-                        )
+                estadisticas.add(
+                    mapOf(
+                        "mes" to mesNombre,
+                        "pedidos" to pedidos
                     )
-                } while (cursor.moveToNext())
-            }
+                )
+            } while (cursor.moveToNext())
+        }
 
-            cursor.close()
-            return estadisticas
+        cursor.close()
+        return estadisticas
     }
 
     fun insertarUsuario(nombre: String, usuario: String, password: String): Long {
@@ -121,34 +122,6 @@ class UsuarioDAO(context: Context) {
     }
 
     @SuppressLint("Range")
-//    fun fnObtenerIdUsuario(username: String, password: String): String? {
-//        Log.i(Tools.LOGTAG, "Ingresando a fnObtenerIdUsuario")
-//
-//        val db = dbHelper.readableDatabase
-//
-//        return try {
-//            val c: Cursor = db.rawQuery(
-//                "SELECT id_usuario FROM ${Tools.TABLA_USUARIOS} WHERE id_usuario=? AND password=?",
-//                arrayOf(username, password)
-//            )
-//
-//            if (c.moveToFirst()) {
-//                val idUsuario = c.getString(c.getColumnIndex("id_usuario"))
-//                Log.i(Tools.LOGTAG, "id_usuario encontrado: $idUsuario")
-//                idUsuario
-//            } else {
-//                Log.w(Tools.LOGTAG, "No se encontró el id_usuario para las credenciales proporcionadas")
-//                null
-//            }.also {
-//                c.close()
-//            }
-//        } catch (e: Exception) {
-//            throw DAOException("UsuarioDAO: Error al obtener id_usuario: ${e.message}")
-//        } finally {
-//            db.close()
-//        }
-//    }
-
     fun fnObtenerIdUsuario(username: String, password: String): Int? {
         Log.i(Tools.LOGTAG, "Ingresando a fnObtenerIdUsuario")
 
@@ -181,5 +154,30 @@ class UsuarioDAO(context: Context) {
         }
     }
 
+    fun getUltimosPedidos(userId: Int): List<Map<String, String>> {
+        val db = dbHelper.readableDatabase
+        val pedidos = mutableListOf<Map<String, String>>()
+
+        val cursor = db.rawQuery(
+            """
+        SELECT descripcion, fecha 
+        FROM ${Tools.TABLA_PEDIDOS}
+        WHERE id_usuario = ?
+        ORDER BY fecha DESC
+        LIMIT 3
+        """.trimIndent(),
+            arrayOf(userId.toString())
+        )
+
+        if (cursor.moveToFirst()) {
+            do {
+                val descripcion = cursor.getString(cursor.getColumnIndexOrThrow("descripcion"))
+                val fecha = cursor.getString(cursor.getColumnIndexOrThrow("fecha"))
+                pedidos.add(mapOf("pedido" to descripcion, "fecha" to fecha))
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return pedidos
+    }
 
 }
