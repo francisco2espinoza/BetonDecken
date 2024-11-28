@@ -160,14 +160,17 @@ class LoginActivity : AppCompatActivity() {
             Log.i(Tools.LOGTAG, "Intentando login con username: $username y password: $password")
 
             // Validar existencia del usuario
-            val idUsuario = dao.fnObtenerIdUsuario(username, password)
+            //val idUsuario = dao.fnObtenerIdUsuario(username, password)
+            val userId = dao.fnObtenerIdUsuario(username, password)
 
-            if (idUsuario != null) {
-                Log.i(Tools.LOGTAG, "Login exitoso para el usuario: $idUsuario")
+//            if (idUsuario != null) {
+            if (userId != null) {
+                Log.i(Tools.LOGTAG, "Login exitoso para el usuario: $userId")
 
                 // Guardar id_usuario en SharedPreferences
                 val editorPreferences = preferences.edit()
-                editorPreferences.putString("id_usuario", idUsuario) // Guardamos el id_usuario.
+                //editorPreferences.putString("id_usuario", idUsuario) // Guardamos el id_usuario.
+                editorPreferences.putInt("id_usuario", userId) // Guardar el ID numérico del usuario
                 editorPreferences.putString("LastUser", username)
                 editorPreferences.putString("LastPassword", password)
                 editorPreferences.putBoolean("RecordarPassword", true)

@@ -73,31 +73,65 @@ class UsuarioDAO(myContext: Context) {
     }
 
     @SuppressLint("Range")
-    fun fnObtenerIdUsuario(username: String, password: String): String? {
+//    fun fnObtenerIdUsuario(username: String, password: String): String? {
+//        Log.i(Tools.LOGTAG, "Ingresando a fnObtenerIdUsuario")
+//
+//        val db = dbHelper.readableDatabase
+//
+//        return try {
+//            val c: Cursor = db.rawQuery(
+//                "SELECT id_usuario FROM ${Tools.TABLA_USUARIOS} WHERE id_usuario=? AND password=?",
+//                arrayOf(username, password)
+//            )
+//
+//            if (c.moveToFirst()) {
+//                val idUsuario = c.getString(c.getColumnIndex("id_usuario"))
+//                Log.i(Tools.LOGTAG, "id_usuario encontrado: $idUsuario")
+//                idUsuario
+//            } else {
+//                Log.w(Tools.LOGTAG, "No se encontró el id_usuario para las credenciales proporcionadas")
+//                null
+//            }.also {
+//                c.close()
+//            }
+//        } catch (e: Exception) {
+//            throw DAOException("UsuarioDAO: Error al obtener id_usuario: ${e.message}")
+//        } finally {
+//            db.close()
+//        }
+//    }
+
+    fun fnObtenerIdUsuario(username: String, password: String): Int? {
         Log.i(Tools.LOGTAG, "Ingresando a fnObtenerIdUsuario")
 
         val db = dbHelper.readableDatabase
 
         return try {
-            val c: Cursor = db.rawQuery(
-                "SELECT id_usuario FROM ${Tools.TABLA_USUARIOS} WHERE id_usuario=? AND password=?",
+            val cursor = db.rawQuery(
+                """
+            SELECT id 
+            FROM ${Tools.TABLA_USUARIOS} 
+            WHERE id_usuario = ? AND password = ?
+            """.trimIndent(),
                 arrayOf(username, password)
             )
 
-            if (c.moveToFirst()) {
-                val idUsuario = c.getString(c.getColumnIndex("id_usuario"))
-                Log.i(Tools.LOGTAG, "id_usuario encontrado: $idUsuario")
-                idUsuario
+            if (cursor.moveToFirst()) {
+                val id = cursor.getInt(cursor.getColumnIndex("id")) // Recuperar el campo `id` numérico
+                Log.i(Tools.LOGTAG, "ID encontrado: $id")
+                id
             } else {
-                Log.w(Tools.LOGTAG, "No se encontró el id_usuario para las credenciales proporcionadas")
+                Log.w(Tools.LOGTAG, "No se encontró el ID para las credenciales proporcionadas")
                 null
             }.also {
-                c.close()
+                cursor.close()
             }
         } catch (e: Exception) {
-            throw DAOException("UsuarioDAO: Error al obtener id_usuario: ${e.message}")
+            throw DAOException("UsuarioDAO: Error al obtener ID: ${e.message}")
         } finally {
             db.close()
         }
     }
+
+
 }
